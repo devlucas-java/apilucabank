@@ -1,4 +1,4 @@
-💳 ApiLucaBank
+# 💳 ApiLucaBank
 
 Secure • Scalable • Production-Ready REST API
 
@@ -14,7 +14,7 @@ The project is designed with a strong focus on:
 
 🏭 Production-grade standards
 
-🚀 Tech Stack
+# 🚀 Tech Stack
 Technology	Description
 Java 21	Latest LTS version
 Maven 4.0.3	Dependency management
@@ -27,7 +27,7 @@ Bean Validation (@Valid)	DTO validation
 Swagger / OpenAPI	API documentation
 Docker (Planned)	Containerization
 Docker Compose (Planned)	Multi-container setup
-🏗 Architecture
+# 🏗 Architecture
 
 The project follows a layered architecture with strict separation of concerns:
 
@@ -69,7 +69,7 @@ Easy to expand
 
 Production-oriented structure
 
-🔐 Security
+# 🔐 Security
 
 Security is the core pillar of ApiLucaBank.
 
@@ -91,7 +91,7 @@ Dev & Prod profiles
 
 Sanitized error responses
 
-👥 Roles
+# 👥 Roles
 
 ROLE_USER
 
@@ -99,7 +99,7 @@ ROLE_ADMIN
 
 ROLE_SUPERADMIN
 
-🔑 Authorities (Examples)
+# 🔑 Authorities (Examples)
 
 USER_READ
 
@@ -123,7 +123,7 @@ private String lastName;
 
 Validation errors are automatically intercepted and returned in a standardized JSON format.
 
-🛑 Standardized Error Handling
+# 🛑 Standardized Error Handling
 
 The API uses a centralized @RestControllerAdvice to ensure consistent and secure error responses.
 
@@ -176,7 +176,7 @@ Connection pool configuration
 
 Profile activation
 
-🛢 Database
+# 🛢 Database
 
 PostgreSQL
 
@@ -237,7 +237,7 @@ Containerized deployment
 
 Production-level error handling
 
-📌 Future Improvements
+# 📌 Future Improvements
 
 Full Docker & Docker Compose implementation
 
@@ -251,9 +251,11 @@ Monitoring with Spring Actuator
 
 Rate limiting
 
+Chat with WebSocket
+
 Refresh token implementation
 
-👨‍💻 Author
+# 👨‍💻 Author
 
 Lucas Macedo
 Backend Developer focused on secure and scalable systems.
