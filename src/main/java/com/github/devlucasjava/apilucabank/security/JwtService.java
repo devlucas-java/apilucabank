@@ -1,9 +1,9 @@
 package com.github.devlucasjava.apilucabank.security;
 
+import com.github.devlucasjava.apilucabank.exception.CustomSignatureException;
+import com.github.devlucasjava.apilucabank.exception.TokenExpiredException;
 import com.github.devlucasjava.apilucabank.model.Users;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ public class JwtService {
     private final Key key;
 
     // Constructor with variable of systems
-    public JwtService(@Value("${spring.jwt.secret}") String jwtSecret,
-                      @Value("${spring.jwt.expiration}") Long jwtExpiration
+    public JwtService(@Value("${jwt.secret}") String jwtSecret,
+                      @Value("${jwt.expiration}") Long jwtExpiration
     ) {
         this.jwtExpiration = jwtExpiration;
         this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
@@ -61,10 +61,12 @@ public class JwtService {
             return Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
-                    .parseClaimsJws(token).getBody();
-        } catch (IllegalArgumentException e) {
-//            log.warn("Invalid JWT token: {", token ,"}");
-            throw new RuntimeException("Invalid JWT Token");
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            throw new TokenExpiredException("Token Expired");
+        } catch (JwtException e) {
+            throw new CustomSignatureException("Token Invalid");
         }
     }
 }

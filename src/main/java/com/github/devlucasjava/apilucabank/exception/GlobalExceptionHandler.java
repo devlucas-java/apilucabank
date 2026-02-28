@@ -1,5 +1,6 @@
 package com.github.devlucasjava.apilucabank.exception;
 
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +50,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomAuthenticationException.class)
     public ResponseEntity<Map<String, Object>> hendleAuthFailed(CustomAuthenticationException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.UNAUTHORIZED, "Authentication Failed", ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<Map<String, Object>> hendleTokenExpired(TokenExpiredException ex, HttpServletRequest request) {
+        return buildResponse(HttpStatus.UNAUTHORIZED, "Token Expired", ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(CustomSignatureException.class)
+    public ResponseEntity<Map<String, Object>> hendleTokenExpired(CustomSignatureException ex, HttpServletRequest request) {
+        return buildResponse(HttpStatus.UNAUTHORIZED, "Token invalid", ex.getMessage(), request);
     }
 
     @ExceptionHandler(InternalServerErrorException.class)

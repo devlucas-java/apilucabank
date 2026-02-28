@@ -1,6 +1,8 @@
 package com.github.devlucasjava.apilucabank.security;
 
 
+import com.github.devlucasjava.apilucabank.exception.CustomSignatureException;
+import com.github.devlucasjava.apilucabank.exception.TokenExpiredException;
 import com.github.devlucasjava.apilucabank.repository.UsersRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -31,29 +33,42 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
-        final String token;
-        final String username;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        token = authHeader.substring(7);
-        username = jwtService.extractUsername(token);
+        final String token = authHeader.substring(7);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            usersRepository.findByEmailOrPasaport(username)
-                    .ifPresent(user -> {
-                        if (jwtService.isTokenValid(token, user)) {
-                            var authToken = new UsernamePasswordAuthenticationToken(
-                                    user, null, user.getAuthorities()
-                            );
-                            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                            SecurityContextHolder.getContext().setAuthentication(authToken);
-                        }
-                    });
+        try {
+            final String username = jwtService.extractUsername(token);
+
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                usersRepository.findByEmailOrPasaport(username)
+                        .ifPresent(user -> {
+                            if (jwtService.isTokenValid(token, user)) {
+                                var authToken = new UsernamePasswordAuthenticationToken(
+                                        user, null, user.getAuthorities()
+                                );
+                                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                                SecurityContextHolder.getContext().setAuthentication(authToken);
+                            }
+                        });
+            }
+
+        } catch (TokenExpiredException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"Token expirado\"}");
+            return; // não continua o filterChain
+        } catch (CustomSignatureException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"Token inválido\"}");
+            return;
         }
+
         filterChain.doFilter(request, response);
     }
 

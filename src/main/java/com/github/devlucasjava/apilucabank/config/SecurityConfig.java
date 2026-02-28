@@ -3,6 +3,7 @@ package com.github.devlucasjava.apilucabank.config;
 
 import com.github.devlucasjava.apilucabank.exception.CustomAuthenticationException;
 import com.github.devlucasjava.apilucabank.model.Users;
+import com.github.devlucasjava.apilucabank.security.JwtAuthenticationEntryPoint;
 import com.github.devlucasjava.apilucabank.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,8 +37,6 @@ public class SecurityConfig {
 
     @Value("${spring.cors.allowed-origins}")
     private final List<String> allowedOrigins;
-    private final JwtAuthenticationFilter jwtAuthFilter;
-
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -53,8 +52,7 @@ public class SecurityConfig {
                                         "/v3/api-docs/**"
                                 ).permitAll()
                         .anyRequest().permitAll()
-                )
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                );
 
         return http.build();
     }
