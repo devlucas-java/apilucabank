@@ -1,6 +1,12 @@
 package com.github.devlucasjava.apilucabank.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +22,7 @@ import java.util.List;
 public class Role {
 
     @Id
-    private String name; // ex: "USER", "ADMIN"
+    private String name;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -25,4 +31,8 @@ public class Role {
             inverseJoinColumns = @JoinColumn(name = "authority_name")
     )
     private List<Authority> authorities;
+
+    public List<Authority> getAuthorities() {
+        return authorities;
+    }
 }
