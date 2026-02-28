@@ -1,67 +1,79 @@
 💳 ApiLucaBank
 
-ApiLucaBank is a secure, scalable REST API built with Java 21 and Spring Boot, following clean code principles, layered architecture, and production-ready best practices.
+Secure • Scalable • Production-Ready REST API
 
-The project focuses on security, maintainability, and extensibility, designed to evolve easily as new features are introduced.
+ApiLucaBank is a secure and extensible banking API built with Java 21 and Spring Boot, following clean architecture principles, layered design, and modern backend best practices.
+
+The project is designed with a strong focus on:
+
+🔐 Security-first architecture
+
+🧱 Clean and maintainable code
+
+📈 Scalability and extensibility
+
+🏭 Production-grade standards
 
 🚀 Tech Stack
-
-Java 21
-
-Maven 4.0.3
-
-Spring Boot
-
-Spring Security
-
-JWT Authentication
-
-Spring Data JPA (Hibernate)
-
-PostgreSQL
-
-Bean Validation (@Valid)
-
-Swagger / OpenAPI
-
-Docker (planned)
-
-Docker Compose (planned)
-
+Technology	Description
+Java 21	Latest LTS version
+Maven 4.0.3	Dependency management
+Spring Boot	Application framework
+Spring Security	Authentication & Authorization
+JWT	Stateless authentication
+Spring Data JPA (Hibernate)	ORM
+PostgreSQL	Relational database
+Bean Validation (@Valid)	DTO validation
+Swagger / OpenAPI	API documentation
+Docker (Planned)	Containerization
+Docker Compose (Planned)	Multi-container setup
 🏗 Architecture
 
-The project follows a layered architecture with clear separation of concerns:
+The project follows a layered architecture with strict separation of concerns:
 
-controller → service → repository → database
-Layers
+Controller → Service → Repository → Database
+📂 Layers Overview
+🔹 Controller
 
-Controller → Handles HTTP requests and responses
+Handles HTTP requests and responses.
 
-Service → Business logic
+🔹 Service
 
-Repository → Data access layer (JPA)
+Contains business logic and domain rules.
 
-Security → JWT filter, authentication and authorization
+🔹 Repository
 
-Exception → Global error handling
+Data access layer using Spring Data JPA.
 
-DTO → Data transfer objects with validation
+🔹 Security
 
-This approach ensures:
+JWT filter, authentication flow, authorization rules.
 
-Clean and maintainable code
+🔹 Exception
 
-Scalability
+Centralized global error handling.
 
-Testability
+🔹 DTO
 
-Easy feature expansion
+Validated request and response objects.
+
+✅ Why This Architecture?
+
+Clean and readable codebase
+
+High cohesion & low coupling
+
+Easy to test
+
+Easy to expand
+
+Production-oriented structure
 
 🔐 Security
 
-Security is a core pillar of ApiLucaBank.
+Security is the core pillar of ApiLucaBank.
 
-Implemented Features
+✔ Implemented Features
 
 JWT-based authentication
 
@@ -71,13 +83,15 @@ Authority-based permission system
 
 Custom AuthenticationEntryPoint
 
-Secure password handling
+Secure password encryption
 
 CORS configuration
 
-Dev and Prod profiles
+Dev & Prod profiles
 
-Roles
+Sanitized error responses
+
+👥 Roles
 
 ROLE_USER
 
@@ -85,7 +99,7 @@ ROLE_ADMIN
 
 ROLE_SUPERADMIN
 
-Authorities (example)
+🔑 Authorities (Examples)
 
 USER_READ
 
@@ -95,11 +109,11 @@ ADMIN_READ
 
 ADMIN_WRITE
 
-This allows fine-grained access control and scalable permission management.
+This structure enables fine-grained access control and enterprise-level permission scalability.
 
 ✅ DTO Validation
 
-All request payloads are validated using Bean Validation with @Valid.
+All incoming requests are validated using Bean Validation (@Valid).
 
 Example:
 
@@ -111,10 +125,9 @@ Validation errors are automatically intercepted and returned in a standardized J
 
 🛑 Standardized Error Handling
 
-The API uses a global exception handler (@RestControllerAdvice) to ensure consistent responses.
+The API uses a centralized @RestControllerAdvice to ensure consistent and secure error responses.
 
-All errors follow a structured JSON format:
-
+📦 Error Response Pattern
 {
   "timestamp": "2026-02-28T00:00:00Z",
   "status": 400,
@@ -125,40 +138,39 @@ All errors follow a structured JSON format:
     "lastName": "Last name must be between 2 and 100 characters"
   }
 }
+🔎 Handled HTTP Status Codes
 
-Handled cases:
+400 → Validation errors
 
-400 – Validation errors
+401 → Authentication failures (invalid/expired JWT)
 
-401 – Authentication errors (invalid/expired JWT)
+403 → Access denied
 
-403 – Access denied
+404 → Resource not found
 
-404 – Resource not found
+409 → Data conflicts (email/passport already exists)
 
-409 – Data conflicts (email/passport already exists)
+500 → Internal server error (sanitized)
 
-500 – Internal server error (sanitized response)
-
-Stack traces are never exposed to the client.
+⚠ Stack traces are never exposed to the client.
 
 ⚙ Environment Configuration
 
-The project supports environment-based configuration:
+The project supports multiple environments:
 
 application-dev.yml
 
 application-prod.yml
 
-Configured features:
+Configured Settings
 
 Database connection
 
 JWT secret & expiration
 
-CORS settings
+CORS configuration
 
-Hibernate configuration
+Hibernate settings
 
 Connection pool configuration
 
@@ -168,35 +180,32 @@ Profile activation
 
 PostgreSQL
 
-JPA / Hibernate
+JPA / Hibernate ORM
 
 Unique constraints (email, passport)
 
-Connection pool configured
+Optimized connection pool
 
 Clean entity relationships
 
 📄 API Documentation
 
-Swagger is integrated for interactive documentation.
-
-After starting the application:
+Interactive documentation available via Swagger:
 
 http://localhost:8080/swagger-ui/index.html
-🐳 Docker (Planned Implementation)
+🐳 Docker (Planned)
 
-The project will be containerized using:
+The system will be containerized with:
 
-One container for PostgreSQL
+🗄 PostgreSQL container
 
-One container for the Spring Boot application
+☕ Spring Boot container
 
-Docker bridge network between containers
+🔗 Docker bridge network
 
-Port 8080 exposed for API access
+🌐 Port 8080 exposed
 
-Architecture:
-
+Planned Architecture
 PostgreSQL Container
         ↕
 Bridge Network
@@ -204,49 +213,53 @@ Bridge Network
 Spring Boot Container
         ↕
 localhost:8080
-
-This setup will provide:
-
-Easy deployment
+Benefits
 
 Environment isolation
 
 Scalable infrastructure
 
+Easy deployment
+
 Reproducible environments
 
 🎯 Project Goals
 
-Production-ready security
+Enterprise-grade security
 
 Clean architecture
 
-Expandable structure
+Expandable permission system
 
 Modern backend standards
 
 Containerized deployment
 
-Maintainable codebase
+Production-level error handling
 
 📌 Future Improvements
 
-Full Docker & Docker Compose setup
+Full Docker & Docker Compose implementation
 
 CI/CD pipeline
 
-Integration and unit tests
+Unit & integration testing
 
-Logging improvements
+Structured logging improvements
 
 Monitoring with Spring Actuator
 
 Rate limiting
 
+Refresh token implementation
+
 👨‍💻 Author
 
 Lucas Macedo
-github: devlucas-java
-instagram: lucas___sdk2
-instagram: devlucas-java
 Backend Developer focused on secure and scalable systems.
+
+GitHub: https://github.com/devlucas-java
+
+LinkedIn: https://www.linkedin.com/in/devlucas-java/
+
+Instagram: https://www.instagram.com/devlucas_java/
