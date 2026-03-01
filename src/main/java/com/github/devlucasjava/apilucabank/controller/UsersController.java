@@ -3,7 +3,6 @@ package com.github.devlucasjava.apilucabank.controller;
 import com.github.devlucasjava.apilucabank.dto.response.UsersResponse;
 import com.github.devlucasjava.apilucabank.model.Users;
 import com.github.devlucasjava.apilucabank.service.UsersService;
-import com.github.devlucasjava.apilucabank.utils.annotation.CurrentUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,14 +12,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
-@Tag(name = "Users", description = "Endpoints related to users")
+@RequestMapping("/user")
+@Tag(name = "User", description = "Endpoints related to users")
 public class UsersController {
 
     private final UsersService usersService;
@@ -32,8 +32,8 @@ public class UsersController {
             @ApiResponse(responseCode = "403", description = "Access denied")
     })
     @PreAuthorize("hasAuthority('USER_READ')")
-    @GetMapping("/me")
-    public ResponseEntity<UsersResponse> getMe(@CurrentUser Users users) {
+    @GetMapping("/profile")
+    public ResponseEntity<UsersResponse> getMe(@AuthenticationPrincipal Users users) {
         UsersResponse user = usersService.getUserAuthenticated(users);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
