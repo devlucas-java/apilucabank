@@ -43,19 +43,6 @@ public class JwtService {
                 .compact();
     }
 
-
-    public String extractUsername(String token) {
-        return parseChains(token).getSubject();
-    }
-    public boolean isTokenValid(String token, Users users) {
-        final String username = extractUsername(token);
-        return username.equals(users.getUsername()) && !isTokenExpired(token);
-    }
-    public boolean isTokenExpired(String token) {
-        return parseChains(token).getExpiration().before(Date.from(Instant.now()));
-    }
-
-
     public Claims parseChains(String token) {
         try {
             return Jwts.parserBuilder()
@@ -68,5 +55,16 @@ public class JwtService {
         } catch (JwtException e) {
             throw new CustomSignatureException("Token Invalid");
         }
+    }
+
+    public String extractUsername(String token) {
+        return parseChains(token).getSubject();
+    }
+    public boolean isTokenValid(String token, Users users) {
+        final String username = extractUsername(token);
+        return username.equals(users.getUsername()) && !isTokenExpired(token);
+    }
+    public boolean isTokenExpired(String token) {
+        return parseChains(token).getExpiration().before(Date.from(Instant.now()));
     }
 }

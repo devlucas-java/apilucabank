@@ -18,12 +18,12 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UsersRepository usersRepository;
 
-    public JwtAuthenticationFilter(JwtService jwtService, UsersRepository usersRepository) {
+    public JwtAuthFilter(JwtService jwtService, UsersRepository usersRepository) {
         this.jwtService = jwtService;
         this.usersRepository = usersRepository;
     }
@@ -45,7 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             final String username = jwtService.extractUsername(token);
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                usersRepository.findByEmailOrPasaport(username)
+                usersRepository.findByEmailOrPassport(username)
                         .ifPresent(user -> {
                             if (jwtService.isTokenValid(token, user)) {
                                 var authToken = new UsernamePasswordAuthenticationToken(
@@ -61,7 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.getWriter().write("{\"error\": \"Token expirado\"}");
-            return; // não continua o filterChain
+            return;
         } catch (CustomSignatureException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
@@ -71,6 +71,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
