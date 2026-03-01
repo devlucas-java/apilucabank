@@ -1,5 +1,6 @@
 package com.github.devlucasjava.apilucabank.dto.mapper;
 
+import com.github.devlucasjava.apilucabank.dto.request.RegisterRequest;
 import com.github.devlucasjava.apilucabank.dto.response.UsersResponse;
 import com.github.devlucasjava.apilucabank.model.Users;
 import org.mapstruct.Mapper;
@@ -7,8 +8,11 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface UserMapper {
+public interface UsersMapper {
 
     @Mapping(target = "role", source = "role.name")
-    UsersResponse toResponse(Users user);
+    @Mapping(target = "passport", source = "passport")
+    @Mapping(target = "isActive", source = "active")
+    @Mapping(target = "isLocked", source = "locked")
+    UsersResponse toUsersResponse(Users user);
 }

@@ -1,6 +1,6 @@
 package com.github.devlucasjava.apilucabank.dto.request;
 
-import com.github.devlucasjava.apilucabank.utils.annotation.ValidAge;
+import com.github.devlucasjava.apilucabank.dto.utils.annotation.ValidAge;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -41,7 +41,7 @@ public class RegisterRequest {
             requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Passaport is required")
     @Size(min = 5, max = 20, message = "Passaport must be between 5 and 20 characters")
-    private String passaport;
+    private String passport;
 
     @Schema(description = "User password", example = "Password123!",
             requiredMode = Schema.RequiredMode.REQUIRED)

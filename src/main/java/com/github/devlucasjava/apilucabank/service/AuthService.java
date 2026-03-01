@@ -1,11 +1,13 @@
 package com.github.devlucasjava.apilucabank.service;
 
 
+import com.github.devlucasjava.apilucabank.dto.mapper.AuthMapper;
+import com.github.devlucasjava.apilucabank.dto.mapper.RegisterMapper;
 import com.github.devlucasjava.apilucabank.dto.request.LoginRequest;
 import com.github.devlucasjava.apilucabank.dto.request.RegisterRequest;
 import com.github.devlucasjava.apilucabank.dto.response.AuthResponse;
-import com.github.devlucasjava.apilucabank.exception.CustomAuthenticationException;
-import com.github.devlucasjava.apilucabank.exception.InternalServerErrorException;
+import com.github.devlucasjava.apilucabank.exception.CustomAuthException;
+import com.github.devlucasjava.apilucabank.exception.InternalErrorServerException;
 import com.github.devlucasjava.apilucabank.exception.ResourceConflictException;
 import com.github.devlucasjava.apilucabank.model.Role;
 import com.github.devlucasjava.apilucabank.model.Users;
@@ -29,34 +31,30 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse register(RegisterRequest request) {
-        if (usersRepository.findByEmail(request.getEmail()).isPresent()){
-            throw new ResourceConflictException("Email");
-        }
-        if (usersRepository.findByPassaport(request.getPassaport()).isPresent()){
-            throw new ResourceConflictException("Passaport");
-        }
-        Role role = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new InternalServerErrorException("Error in registering role"));
 
-        Users users = Users.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .passaport(request.getPassaport())
-                .birthDate(request.getBirthDate())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(role)
-                .build();
-        usersRepository.save(users);
-        String token = jwtService.generateToken(users);
+        if (usersRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new ResourceConflictException("Email already registered");
+        }
+        if (usersRepository.findByPassport(request.getPassport()).isPresent()) {
+            throw new ResourceConflictException("Passport already registered");
+        }
+         final Role role = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new InternalErrorServerException("Default role not configured"));
 
-        return AuthResponse.builder()
-                .email(users.getEmail())
-                .role(users.getRole().toString())
-                .expiresIn(jwtService.jwtExpiration)
-                .tokenType("Beaver")
-                .accessToken(token).build();
-    };
+        Users user = RegisterMapper.toUsers(request);
+        user.setRole(role);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        usersRepository.save(user);
+
+        final String token = jwtService.generateToken(user);
+
+        AuthResponse response = AuthMapper.toAuthResponse(user);
+        response.setAccessToken(token);
+        response.setExpiresIn(jwtService.jwtExpiration);
+
+        return response;
+    }
 
 
     public AuthResponse authenticate(LoginRequest request){
@@ -66,16 +64,13 @@ public class AuthService {
                         request.getPassword()
                 )
         );
-        Users users = usersRepository.findByEmailOrPasaport(request.getLogin())
-                .orElseThrow(() -> new CustomAuthenticationException("User not found"));
+        Users users = usersRepository.findByEmailOrPassport(request.getLogin())
+                .orElseThrow(() -> new CustomAuthException("User not found"));
 
         final String token = jwtService.generateToken(users);
-
-        return AuthResponse.builder()
-                .email(users.getEmail())
-                .role(users.getRole().toString())
-                .expiresIn(jwtService.jwtExpiration)
-                .accessToken(token)
-                .tokenType("Beaver").build();
+        AuthResponse response = AuthMapper.toAuthResponse(users);
+        response.setAccessToken(token);
+        response.setExpiresIn(jwtService.jwtExpiration);
+        return response;
     }
 }

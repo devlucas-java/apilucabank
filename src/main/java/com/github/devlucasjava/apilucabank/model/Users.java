@@ -40,7 +40,7 @@ public class Users implements UserDetails {
     private LocalDate birthDate;
 
     @Column(nullable = false)
-    private String passaport;
+    private String passport;
 
     @OneToOne(fetch = FetchType.LAZY)
     private Account account;
@@ -103,4 +103,5 @@ public class Users implements UserDetails {
 
     @Override
     public boolean isEnabled() { return !this.isActive; }
+
 }

@@ -1,5 +1,6 @@
 package com.github.devlucasjava.apilucabank.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -28,7 +30,8 @@ public class UsersResponse {
     @Schema(description = "User email", example = "john@email.com")
     private String email;
 
-    @Schema(description = "User birth date", example = "1990-01-01")
+    @Schema(description = "User birth date", example = "1990-01-15")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
     @Schema(description = "User passport number", example = "AB1234567")
