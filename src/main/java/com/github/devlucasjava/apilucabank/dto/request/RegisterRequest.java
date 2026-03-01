@@ -17,19 +17,19 @@ import java.time.LocalDate;
 @Schema(description = "Request Register")
 public class RegisterRequest {
 
-    @Schema(description = "User first name", example = "John",
+    @Schema(description = "User first name", example = "Lucas",
             requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "First name is required")
     @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")
     private String firstName;
 
-    @Schema(description = "User last name", example = "Doe",
+    @Schema(description = "User last name", example = "Macedo",
             requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Last name is required")
     @Size(min = 2, max = 100, message = "Last name must be between 2 and 100 characters")
     private String lastName;
 
-    @Schema(description = "User email", example = "john@email.com",
+    @Schema(description = "User email", example = "lucas@email.com",
             requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format (ISO standard)",
@@ -37,7 +37,7 @@ public class RegisterRequest {
     private String email;
 
     @Schema(description = "Passport number (CPF for users, CNPJ for enterprises)",
-            example = "12345678901",
+            example = "LM12345678",
             requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Passaport is required")
     @Size(min = 5, max = 20, message = "Passaport must be between 5 and 20 characters")
@@ -51,7 +51,7 @@ public class RegisterRequest {
             message = "Password must contain at least: 1 uppercase, 1 lowercase, 1 number and 1 special character")
     private String password;
 
-    @Schema(description = "User birth date", example = "1990-01-15",
+    @Schema(description = "User birth date", example = "2004-08-14",
             requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "Birth date is required")
     @Past(message = "Birth date must be in the past")

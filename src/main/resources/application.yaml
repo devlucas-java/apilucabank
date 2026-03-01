@@ -5,3 +5,6 @@ spring:
 
   application:
     name: apilucabank
+
+springdoc:
+  override-with-generic-response: false

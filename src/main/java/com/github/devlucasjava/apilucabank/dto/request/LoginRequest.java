@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Schema(description = "Response Login")
 public class LoginRequest {
-    @Schema(description = "User email or username", example = "user@email.com",
+    @Schema(description = "User email or username", example = "lucas@email.com",
             requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "Login is required")
     private String login;

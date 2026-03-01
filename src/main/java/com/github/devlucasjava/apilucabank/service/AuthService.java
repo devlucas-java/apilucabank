@@ -38,7 +38,7 @@ public class AuthService {
         if (usersRepository.findByPassport(request.getPassport()).isPresent()) {
             throw new ResourceConflictException("Passport already registered");
         }
-         final Role role = roleRepository.findByName("ROLE_USER")
+         final Role role = roleRepository.findByName("USER")
                 .orElseThrow(() -> new InternalErrorServerException("Default role not configured"));
 
         Users user = RegisterMapper.toUsers(request);
