@@ -1,6 +1,6 @@
-package com.github.devlucasjava.apilucabank.utils;
+package com.github.devlucasjava.apilucabank.dto.utils;
 
-import com.github.devlucasjava.apilucabank.utils.annotation.ValidAge;
+import com.github.devlucasjava.apilucabank.dto.utils.annotation.ValidAge;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
