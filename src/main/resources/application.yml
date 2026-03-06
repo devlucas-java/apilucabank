@@ -3,6 +3,9 @@ spring:
     activate:
       on-profile: dev
 
+  profiles:
+    active: dev
+
   application:
     name: apilucabank
 

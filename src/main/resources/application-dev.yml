@@ -11,7 +11,7 @@ spring:
     allowed-origins: http://localhost:*
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/cursodb
+    url: jdbc:postgresql://localhost:5432/db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
