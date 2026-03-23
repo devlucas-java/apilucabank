@@ -3,7 +3,11 @@ package com.github.devlucasjava.apilucabank.service;
 import com.github.devlucasjava.apilucabank.dto.mapper.UserMapper;
 import com.github.devlucasjava.apilucabank.dto.request.UsersFilterRequest;
 import com.github.devlucasjava.apilucabank.dto.response.UsersResponse;
+import com.github.devlucasjava.apilucabank.exception.ResourceNotFoundException;
+import com.github.devlucasjava.apilucabank.model.Authority;
+import com.github.devlucasjava.apilucabank.model.Role;
 import com.github.devlucasjava.apilucabank.model.Users;
+import com.github.devlucasjava.apilucabank.repository.RoleRepository;
 import com.github.devlucasjava.apilucabank.repository.UsersRepository;
 import com.github.devlucasjava.apilucabank.service.queryfilter.UserSpec;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -23,6 +30,7 @@ public class AdminService {
     private static final int DEFAULT_PAGE_NUMBER = 0;
 
     private final UsersRepository usersRepository;
+    private final RoleRepository roleRepository;
     private final UserMapper userMapper;
 
     public Page<UsersResponse> findUsers(UsersFilterRequest filter, Integer size, Integer page) {
@@ -50,5 +58,25 @@ public class AdminService {
                 filter.firstName(), filter.lastName(), filter.isActive(), filter.isLocked());
 
         return spec;
+    }
+
+
+    public UsersResponse changeUserRole(UUID id, String roleName) {
+
+        if (!roleName.equals(roleName.toUpperCase())) {
+            throw new IllegalArgumentException("Role must be uppercase");
+        }
+
+        Users user = usersRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        Role role = roleRepository.findByName(roleName)
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
+
+        user.setRole(role);
+
+        usersRepository.save(user);
+
+        return userMapper.toUsersResponse(user);
     }
 }

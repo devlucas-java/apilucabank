@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +27,7 @@ public class AdminController {
     private final AdminService adminService;
 
     @GetMapping("/users")
-    @PreAuthorize("hasAuthority('ADMIN_MANAGE')")
+    @PreAuthorize("hasAuthority('MANAGE_USER')")
     @Operation(summary = "Search users", description = "Search users using optional filter parameters. All filters are optional.")
     public ResponseEntity<Page<UsersResponse>> findUsers(
             @ParameterObject UsersFilterRequest filter,
@@ -42,5 +44,29 @@ public class AdminController {
         log.debug("Admin /users endpoint returned {} users", users.getTotalElements());
 
         return ResponseEntity.status(HttpStatus.OK).body(users);
+    }
+
+
+    @PatchMapping("/users/{id}/role")
+    @PreAuthorize("hasAuthority('MANAGE_USER')")
+    @Operation(
+            summary = "Change user role",
+            description = "Promotes or demotes a user by changing their role. Allowed values: ADMIN, USER."
+    )
+    public ResponseEntity<UsersResponse> changeUserRole(
+            @PathVariable
+            @Parameter(description = "User ID", example = "UUID") UUID id,
+
+            @RequestParam
+            @Parameter(description = "Role name (must be uppercase)", example = "ADMIN")
+            String role
+    ) {
+        log.info("PATCH /admin/users/{}/role | newRole={}", id, role);
+
+        UsersResponse response = adminService.changeUserRole(id, role);
+
+        log.info("User role updated | id={}, newRole={}", id, role);
+
+        return ResponseEntity.ok(response);
     }
 }
