@@ -26,8 +26,10 @@ public class Account {
     @OneToMany
     private List<Transactions> transactionsList;
 
+    @Builder.Default
     private BigDecimal balance =  BigDecimal.ZERO;
 
+    @Builder.Default
     private BigDecimal maxAmountTransaction = BigDecimal.valueOf(1000);
 
     @Column(nullable = false)

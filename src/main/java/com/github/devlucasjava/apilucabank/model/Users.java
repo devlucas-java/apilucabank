@@ -49,13 +49,15 @@ public class Users implements UserDetails {
     @JoinColumn(name = "role_name")
     private Role role;
 
-    // ---------------- Status control ----------------
+
     @Column(nullable = false)
+    @Builder.Default
     private boolean isActive = true;
     @Column(nullable = false)
+    @Builder.Default
     private boolean isLocked = false;
 
-    // ---------------- Timestamps ----------------
+
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
@@ -72,7 +74,7 @@ public class Users implements UserDetails {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // ----------------- Spring Security -----------------
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();
