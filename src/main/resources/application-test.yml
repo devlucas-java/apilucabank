@@ -1,0 +1,29 @@
+jwt:
+  secret: test-secret-key-very-long-for-hs384-abcdefghijklmnopqrstuvwxyz0123456789
+  expiration: 86400
+
+spring:
+  config:
+    activate:
+      on-profile: test
+  cors:
+    allowed-origins: http://localhost:*
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+
+server:
+  port: 0

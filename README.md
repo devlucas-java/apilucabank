@@ -1,133 +1,123 @@
 # 💳 ApiLucaBank
 
-Secure • Scalable • Production-Ready REST API
+**Secure • Scalable • Layered Architecture REST API**
 
-ApiLucaBank is a secure and extensible banking API built with Java 21 and Spring Boot, following clean architecture principles, layered design, and modern backend best practices.
+ApiLucaBank is a secure and extensible banking API built with **Java 21** and **Spring Boot**, following a **layered architecture** approach with clean code principles and modern backend best practices.
 
-The project is designed with a strong focus on:
+The project is already structured with security, validation, testing, and Docker support, and can be started easily using Docker Compose.
 
-🔐 Security-first architecture
-
-🧱 Clean and maintainable code
-
-📈 Scalability and extensibility
-
-🏭 Production-grade standards
+---
 
 # 🚀 Tech Stack
-Technology	Description
-Java 21	Latest LTS version
-Maven 4.0.3	Dependency management
-Spring Boot	Application framework
-Spring Security	Authentication & Authorization
-JWT	Stateless authentication
-Spring Data JPA (Hibernate)	ORM
-PostgreSQL	Relational database
-Bean Validation (@Valid)	DTO validation
-Swagger / OpenAPI	API documentation
-Docker (Planned)	Containerization
-Docker Compose (Planned)	Multi-container setup
+
+| Technology                  | Description                    |
+|-----------------------------|--------------------------------|
+| Java 21                     | Latest LTS version             |
+| Maven                       | Dependency management          |
+| Spring Boot                 | Application framework          |
+| Spring Security             | Authentication & Authorization |
+| JWT                         | Stateless authentication       |
+| Exceptions                  | Custom Exceptions              |
+| MapStructor                 | Implementation in Users        |
+| Actuator                    | Defalt                         |
+| Phrometheus                 | Metrics                        |
+| Grafana                     | Dashboard                      |
+| Spring Data JPA (Hibernate) | ORM                            |
+| PostgreSQL                  | Relational database            |
+| Bean Validation (@Valid)    | DTO validation                 |
+| Swagger / OpenAPI           | API documentation              |
+| Docker                      | Containerization               |
+| Docker Compose              | Multi-container setup          |
+| Mockito                     | Unit testing                   |
+
+---
+
 # 🏗 Architecture
 
-The project follows a layered architecture with strict separation of concerns:
+The project follows a **layered architecture**, with clear separation of responsibilities:
 
-Controller → Service → Repository → Database
-📂 Layers Overview
-🔹 Controller
 
+## 📂 Layers Overview
+
+### 🔹 Controller
 Handles HTTP requests and responses.
 
-🔹 Service
+### 🔹 Service
+Contains business logic and application rules.
 
-Contains business logic and domain rules.
+### 🔹 Repository
+Handles data access using Spring Data JPA.
 
-🔹 Repository
+### 🔹 Security
+JWT authentication, authorization rules, and filters.
 
-Data access layer using Spring Data JPA.
+### 🔹 Exception
+Centralized error handling using `@RestControllerAdvice`.
 
-🔹 Security
-
-JWT filter, authentication flow, authorization rules.
-
-🔹 Exception
-
-Centralized global error handling.
-
-🔹 DTO
-
+### 🔹 DTO
 Validated request and response objects.
 
-✅ Why This Architecture?
+---
 
-Clean and readable codebase
+## ✅ Architecture Characteristics
 
-High cohesion & low coupling
+- Clean and readable code
+- Low coupling and good separation of concerns
+- Easy to maintain and extend
+- Production-oriented structure
 
-Easy to test
+> ⚠️ Note: The project uses a **layered architecture with clean code practices**, not a full Clean Architecture implementation.
 
-Easy to expand
-
-Production-oriented structure
+---
 
 # 🔐 Security
 
-Security is the core pillar of ApiLucaBank.
+Security is one of the main focuses of the project.
 
-✔ Implemented Features
+## ✔ Implemented Features
 
-JWT-based authentication
+- JWT-based authentication
+- Role-based access control
+- Authority-based permission system
+- Password encryption
+- Custom authentication handling
+- CORS configuration
+- Input validation
+- Basic logging
 
-Role-based authorization
-
-Authority-based permission system
-
-Custom AuthenticationEntryPoint
-
-Secure password encryption
-
-CORS configuration
-
-Dev & Prod profiles
-
-Sanitized error responses
+---
 
 # 👥 Roles
 
-ROLE_USER
+- `USER`
+- `ADMIN`
+- `ENTERPRISE`
 
-ROLE_ADMIN
-
-ROLE_SUPERADMIN
+---
 
 # 🔑 Authorities (Examples)
 
-USER_READ
+- `MANAGE_USER`
+- `ACCOUNT`
+- `SEND_TRANSACTIONS`
+- `CANCEL_TRANSACTION`
+- `CHAT_USER`
+- `CHAT_ENTERPRISE`
 
-USER_WRITE
+---
 
-ADMIN_READ
+# ✅ DTO Validation
 
-ADMIN_WRITE
-
-This structure enables fine-grained access control and enterprise-level permission scalability.
-
-✅ DTO Validation
-
-All incoming requests are validated using Bean Validation (@Valid).
+All incoming requests are validated using **Bean Validation**.
 
 Example:
 
+```java
 @Size(min = 2, max = 100)
 @NotBlank
 private String lastName;
 
-Validation errors are automatically intercepted and returned in a standardized JSON format.
 
-# 🛑 Standardized Error Handling
-
-The API uses a centralized @RestControllerAdvice to ensure consistent and secure error responses.
-
-📦 Error Response Pattern
 {
   "timestamp": "2026-02-28T00:00:00Z",
   "status": 400,
@@ -138,130 +128,3 @@ The API uses a centralized @RestControllerAdvice to ensure consistent and secure
     "lastName": "Last name must be between 2 and 100 characters"
   }
 }
-🔎 Handled HTTP Status Codes
-
-400 → Validation errors
-
-401 → Authentication failures (invalid/expired JWT)
-
-403 → Access denied
-
-404 → Resource not found
-
-409 → Data conflicts (email/passport already exists)
-
-500 → Internal server error (sanitized)
-
-⚠ Stack traces are never exposed to the client.
-
-⚙ Environment Configuration
-
-The project supports multiple environments:
-
-application-dev.yml
-
-application-prod.yml
-
-Configured Settings
-
-Database connection
-
-JWT secret & expiration
-
-CORS configuration
-
-Hibernate settings
-
-Connection pool configuration
-
-Profile activation
-
-# 🛢 Database
-
-PostgreSQL
-
-JPA / Hibernate ORM
-
-Unique constraints (email, passport)
-
-Optimized connection pool
-
-Clean entity relationships
-
-📄 API Documentation
-
-Interactive documentation available via Swagger:
-
-http://localhost:8080/swagger-ui/index.html
-🐳 Docker (Planned)
-
-The system will be containerized with:
-
-🗄 PostgreSQL container
-
-☕ Spring Boot container
-
-🔗 Docker bridge network
-
-🌐 Port 8080 exposed
-
-Planned Architecture
-PostgreSQL Container
-        ↕
-Bridge Network
-        ↕
-Spring Boot Container
-        ↕
-localhost:8080
-Benefits
-
-Environment isolation
-
-Scalable infrastructure
-
-Easy deployment
-
-Reproducible environments
-
-🎯 Project Goals
-
-Enterprise-grade security
-
-Clean architecture
-
-Expandable permission system
-
-Modern backend standards
-
-Containerized deployment
-
-Production-level error handling
-
-# 📌 Future Improvements
-
-Full Docker & Docker Compose implementation
-
-CI/CD pipeline
-
-Unit & integration testing
-
-Structured logging improvements
-
-Monitoring with Spring Actuator
-
-Rate limiting
-
-Chat with WebSocket
-
-Refresh token implementation
-
-# 👨‍💻 Author
-
-Lucas Macedo
-Backend Developer focused on secure and scalable systems.
-
-GitHub: https://github.com/devlucas-java
-
-LinkedIn: https://www.linkedin.com/in/devlucas-java/
-
-Instagram: https://www.instagram.com/devlucas_java/

@@ -77,10 +77,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    private static final List<String> PUBLIC_PATHS = List.of(
+            "/auth",
+            "/actuator",
+            "/swagger-ui",
+            "/v3/api-docs"
+    );
+
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
-        List<String> excludedPaths = List.of("/auth/**");
-        return excludedPaths.stream().anyMatch(path::startsWith);
+
+        return PUBLIC_PATHS.stream().anyMatch(path::startsWith);
     }
 }
